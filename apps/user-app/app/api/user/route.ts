@@ -1,0 +1,20 @@
+"use server"
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../../lib/Auth";
+import { NextResponse } from "next/server";
+
+export const GET = async () => {
+  const session = await getServerSession(authOptions);
+  console.log("session in server is ",session);
+  try {
+    if (session.user) {
+      return NextResponse.json({
+        user: session.user,
+      });
+    }
+  } catch (error) {
+    return NextResponse.json({
+      message: "you are not logged in buddy",
+    });
+  }
+};
